@@ -5,10 +5,14 @@ namespace Spatie\Remote\Config;
 class HostConfig
 {
     public function __construct(
-        public string $host,
-        public int $port,
-        public string $user,
-        public string $path,
+        string $host,
+        int $port,
+        string $user,
+        string $path
     ) {
+        $this->host = $host;
+        $this->port = $port;
+        $this->user = $user;
+        $this->path = $path;
     }
 }
