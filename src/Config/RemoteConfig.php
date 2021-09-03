@@ -6,7 +6,7 @@ use Spatie\Remote\Exceptions\CouldNotExecuteCommand;
 
 class RemoteConfig
 {
-    public static function getHost(string $hostName): HostConfig
+    public static function getHost($hostName): HostConfig
     {
         $configValues = config("remote.hosts.{$hostName}");
 
@@ -14,12 +14,17 @@ class RemoteConfig
             throw CouldNotExecuteCommand::hostNotFoundInConfig($hostName);
         }
 
-        foreach (['host', 'port', 'user', 'path'] as $configValue) {
-            if (is_null($configValues[$configValue])) {
-                throw CouldNotExecuteCommand::requiredConfigValueNotSet($hostName, $configValue);
+        foreach (['host', 'port', 'user', 'path'] as $valueName) {
+            if (is_null($configValues[$valueName])) {
+                throw CouldNotExecuteCommand::requiredConfigValueNotSet($valueName, $valueName);
             }
         }
 
-        return new HostConfig(...$configValues);
+        return new HostConfig(
+            $configValues['host'],
+            $configValues['port'],
+            $configValues['user'],
+            $configValues['path'],
+        );
     }
 }
